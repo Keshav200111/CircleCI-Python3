@@ -4,50 +4,33 @@ jobs:
   build:
     docker:
       - image: cimg/python:3.11
+
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-      - run:
-          name: Run build script
-          command: python main.py
-
+      - run: python main.py
   test:
     docker:
       - image: cimg/python:3.11
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-      - run:
-          name: Run tests
-          command: python test.py
-
+      - run: python test.py
   deploy:
     docker:
       - image: cimg/python:3.11
     steps:
       - checkout
-      - run:
-          name: Deploy application
-          command: echo "Deployment successful"
-
+      - run: echo "Practical successfully done"
 workflows:
   build_and_test_deploy:
     jobs:
       - build
       - test:
-          requires:
-            - build
+        requires:
+          - build
       - deploy:
-          requires:
-            - test
-          filters:
-            branches:
-              only: main
+        requires:
+          - test
+        filters:
+          branches:
+            only: main
+            
